@@ -1,3 +1,4 @@
-from boids import Program
+from simulation import Program
 
-Program.run()
+program = Program()
+program.run()
