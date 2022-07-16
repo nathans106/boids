@@ -1,19 +1,10 @@
+use std::collections::HashMap;
+
 use crate::handler;
+use crate::handler::Id;
 use crate::model;
 
 use pyo3::prelude::*;
-
-#[pyclass]
-pub enum BoidType {
-    Dummy1,
-    Dummy2
-}
-
-#[pyclass]
-pub struct Boid {
-    pub pos: model::Pos,
-    pub type_: BoidType
-}
 
 #[pyclass]
 struct Handler {
@@ -24,11 +15,15 @@ struct Handler {
 impl Handler {
     #[new]
     fn new() -> Self {
-        Handler{handler: handler::Handler::new()}
+        Handler{handler: handler::Handler::new(20)}
     }
 
-    pub fn get_boids(&self) -> PyResult<Vec<Boid>> {
-        Ok(self.handler.get_boids().iter().map(|boid| boid.to_py_type()).collect())
+    pub fn get_ids(&self) -> PyResult<Vec<Id>> {
+        Ok(self.handler.ids())
+    }
+
+    pub fn get_positions(&self) -> PyResult<HashMap<Id, model::Pos>> {
+        Ok(self.handler.positions())
     }
     
     pub fn update(&self) -> PyResult<()> {
