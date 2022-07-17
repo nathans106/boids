@@ -9,6 +9,6 @@ impl Boid {
     }
 
     pub fn pos(&self) -> Pos {
-        return (10, 10)
+        return Pos{x: 10, y: 10}
     }
 }
