@@ -4,6 +4,7 @@ use pyo3::prelude::*;
 
 use crate::model::Boid;
 use crate::model::Pos;
+use crate::movement::velocity_calculator::calculate_velocities;
 
 pub type Id = i32;
 
@@ -27,8 +28,11 @@ impl Database {
         HashMap::from_iter(self.boids.iter().map(|(id, boid)| (id.clone(), boid.pos())))
     }
 
-    pub fn update(&self) {
-
+    pub fn update(&mut self) {
+        let velocities = calculate_velocities(&self.boids);
+        for (id, boid) in self.boids.iter_mut() {
+            boid.move_(&velocities[id]);
+        }
     }
 }
 
