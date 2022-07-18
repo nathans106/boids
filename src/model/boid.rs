@@ -9,11 +9,25 @@ impl Boid {
         Boid{pos: Pos{x: 0, y: 0}}
     }
 
-    pub fn pos(&self) -> Pos {
-        return Pos{x: 10, y: 10}
+    pub fn pos(&self) -> &Pos {
+        &self.pos
     }
 
     pub fn move_(&mut self, velocity: &Velocity) {
         self.pos += velocity
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn move_() {
+        let mut boid = Boid::new();
+        boid.move_(&Velocity { dx: 1, dy: 1 });
+        let pos = boid.pos();
+        assert_eq!(pos.x, 1);
+        assert_eq!(pos.y, 1);
     }
 }

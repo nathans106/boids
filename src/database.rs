@@ -25,7 +25,7 @@ impl Database {
     }
 
     pub fn positions(&self) -> HashMap<Id, Pos> {
-        HashMap::from_iter(self.boids.iter().map(|(id, boid)| (id.clone(), boid.pos())))
+        HashMap::from_iter(self.boids.iter().map(|(id, boid)| (id.clone(), boid.pos().clone())))
     }
 
     pub fn update(&mut self) {
@@ -40,4 +40,19 @@ impl Database {
 fn database(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Database>()?;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn update() {
+        let mut db = Database::new(1);
+        db.update();
+        for pos in db.positions().values() {
+            assert_eq!(pos.x, 1);
+            assert_eq!(pos.y, 1);
+        }
+    }
 }

@@ -3,6 +3,7 @@ use std::ops::{Add, AddAssign};
 use pyo3::prelude::*;
 
 #[pyclass]
+#[derive(Clone)]
 pub struct Pos {
     #[pyo3(get, set)]
     pub x: i32,
@@ -27,6 +28,7 @@ impl AddAssign<&Velocity> for Pos {
     }
 }
 
+#[derive(Clone)]
 pub struct Velocity {
     pub dx: i32,
     pub dy: i32
