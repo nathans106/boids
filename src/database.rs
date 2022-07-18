@@ -47,12 +47,23 @@ mod tests {
     use super::*;
 
     #[test]
-    fn update() {
+    fn update_once() {
         let mut db = Database::new(1);
         db.update();
         for pos in db.positions().values() {
             assert_eq!(pos.x, 1);
             assert_eq!(pos.y, 1);
+        }
+    }
+
+    #[test]
+    fn update_twice() {
+        let mut db = Database::new(1);
+        db.update();
+        db.update();
+        for pos in db.positions().values() {
+            assert_eq!(pos.x, 2);
+            assert_eq!(pos.y, 2);
         }
     }
 }
