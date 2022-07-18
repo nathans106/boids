@@ -1,12 +1,17 @@
 use std::collections::HashMap;
 
-use crate::{database::Id, model::{Boid, Velocity}};
+use crate::{database::Id, model::{Boid, Velocity, Pos}};
 
 pub fn calculate_velocities(boids: &HashMap<Id, Boid>) -> HashMap<Id, Velocity> {
     let mut velocities = HashMap::new();
 
-    for (id, _boid) in boids {
-        velocities.insert(id.clone(), Velocity{ dx: 1, dy: 1 });
+    for (id, boid) in boids {
+        let other_boids = boids.iter().filter(|(other_id, _other_boid)| other_id != &id);
+        let other_positions: Vec<&Pos> = other_boids.map(|(_other_id, other_boid)| other_boid.pos()).collect();
+        
+        let flock_centre = Pos::centre(other_positions.into_iter());
+        let velocity = (flock_centre - boid.pos()) / &100;
+        velocities.insert(id.clone(), velocity);
     }
 
     return velocities;
