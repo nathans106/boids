@@ -1,14 +1,13 @@
 from tkinter import Canvas, Tk
 
 _BOID_SIZE = 10
-_CANVAS_SIZE = 500
 _INTERVAL_LENGTH = 50
 
 class Gui:
-    def __init__(self, callback):
+    def __init__(self, canvas_size, callback):
         self._callback = callback
         self._root = Tk()
-        self._canvas = Canvas(self._root, width=_CANVAS_SIZE, height=_CANVAS_SIZE)
+        self._canvas = Canvas(self._root, width=canvas_size, height=canvas_size)
         self._boids = {}
 
         self._canvas.pack()
