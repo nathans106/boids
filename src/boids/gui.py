@@ -2,6 +2,7 @@ from tkinter import Canvas, Tk
 
 _BOID_SIZE = 10
 _CANVAS_SIZE = 500
+_INTERVAL_LENGTH = 50
 
 class Gui:
     def __init__(self, callback):
@@ -11,7 +12,7 @@ class Gui:
         self._boids = {}
 
         self._canvas.pack()
-        self._root.after(500, self._update)
+        self._root.after(_INTERVAL_LENGTH, self._update)
         
     def start(self):
         self._root.mainloop()
@@ -28,4 +29,4 @@ class Gui:
 
     def _update(self):
         self._callback()
-        self._root.after(500, self._update)
+        self._root.after(_INTERVAL_LENGTH, self._update)
