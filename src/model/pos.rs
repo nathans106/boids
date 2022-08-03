@@ -6,25 +6,25 @@ use pyo3::prelude::*;
 #[derive(Clone)]
 pub struct Pos {
     #[pyo3(get, set)]
-    pub x: i32,
+    pub x: f32,
     #[pyo3(get, set)]
-    pub y: i32
+    pub y: f32
 }
 
 impl Pos {
-    pub fn new(x: i32, y: i32) -> Self {
+    pub fn new(x: f32, y: f32) -> Self {
         Pos{x: x, y: y}
     }
 
     pub fn origin() -> Self {
-        Pos{x: 0, y: 0}
+        Pos{x: 0.0, y: 0.0}
     }
 
     pub fn centre<'a, I>(positions: I) -> Pos
         where I: Iterator<Item = &'a Pos>
     {
-        let mut sum_x = 0;
-        let mut sum_y = 0;
+        let mut sum_x = 0.0;
+        let mut sum_y = 0.0;
         let mut count = 0;
 
         for pos in positions {
@@ -33,7 +33,7 @@ impl Pos {
             sum_y += pos.y;
         }
 
-        return Pos{x: sum_x / count, y: sum_y / count};
+        return Pos{x: sum_x / count as f32, y: sum_y / count as f32};
     }
 }
 
@@ -64,14 +64,14 @@ impl Sub<&Pos> for Pos {
 
 #[derive(Clone)]
 pub struct Velocity {
-    pub dx: i32,
-    pub dy: i32
+    pub dx: f32,
+    pub dy: f32
 }
 
-impl Div<&i32> for Velocity {
+impl Div<&f32> for Velocity {
     type Output = Velocity;
 
-    fn div(self, rhs: &i32) -> Self::Output {
+    fn div(self, rhs: &f32) -> Self::Output {
         Velocity{ dx: self.dx / rhs, dy: self.dy / rhs}
     }
 }

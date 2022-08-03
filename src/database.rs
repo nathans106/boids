@@ -19,7 +19,7 @@ impl Database {
     #[new]
     pub fn new(num_boids: i32, width: i32, height: i32) -> Self {
         let mut rnd = rand::thread_rng();
-        Database{ boids: HashMap::from_iter((0..num_boids).map(|id| (id, Boid::at(Pos::new(rnd.gen_range(0..width), rnd.gen_range(0..height)))))) }
+        Database{ boids: HashMap::from_iter((0..num_boids).map(|id| (id, Boid::at(Pos::new(rnd.gen_range(0..width) as f32, rnd.gen_range(0..height) as f32))))) }
     }
 
     pub fn ids(&self) -> Vec<Id> {

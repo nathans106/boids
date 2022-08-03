@@ -6,7 +6,7 @@ pub struct Boid {
 
 impl Boid {
     pub fn new() -> Self {
-        Boid{pos: Pos{x: 0, y: 0}}
+        Boid{pos: Pos::origin()}
     }
 
     pub fn at(pos: Pos) -> Self {

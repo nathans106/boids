@@ -10,7 +10,7 @@ pub fn calculate_velocities(boids: &HashMap<Id, Boid>) -> HashMap<Id, Velocity> 
         let other_positions: Vec<&Pos> = other_boids.map(|(_other_id, other_boid)| other_boid.pos()).collect();
         
         let flock_centre = Pos::centre(other_positions.into_iter());
-        let velocity = (flock_centre - boid.pos()) / &100;
+        let velocity = (flock_centre - boid.pos()) / &100.0;
         velocities.insert(id.clone(), velocity);
     }
 
