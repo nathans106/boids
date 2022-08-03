@@ -12,6 +12,10 @@ pub struct Pos {
 }
 
 impl Pos {
+    pub fn new(x: i32, y: i32) -> Self {
+        Pos{x: x, y: y}
+    }
+
     pub fn origin() -> Self {
         Pos{x: 0, y: 0}
     }

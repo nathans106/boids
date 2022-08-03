@@ -9,7 +9,7 @@ _CANVAS_SIZE = 500
 
 class Program:
     def __init__(self):
-        self._db = Database(_NUM_BOIDS)
+        self._db = Database(_NUM_BOIDS, _CANVAS_SIZE, _CANVAS_SIZE)
         self._gui = Gui(self._update)
 
         for id in self._db.ids():

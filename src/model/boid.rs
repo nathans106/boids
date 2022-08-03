@@ -9,6 +9,10 @@ impl Boid {
         Boid{pos: Pos{x: 0, y: 0}}
     }
 
+    pub fn at(pos: Pos) -> Self {
+        Boid{pos: pos}
+    }
+
     pub fn pos(&self) -> &Pos {
         &self.pos
     }

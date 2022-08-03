@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use pyo3::prelude::*;
+use rand::*;
 
 use crate::model::Boid;
 use crate::model::Pos;
@@ -16,8 +17,9 @@ pub struct Database {
 #[pymethods]
 impl Database {
     #[new]
-    pub fn new(num_boids: i32) -> Self {
-        Database{ boids: HashMap::from_iter((0..num_boids).map(|id| (id, Boid::new()))) }
+    pub fn new(num_boids: i32, width: i32, height: i32) -> Self {
+        let mut rnd = rand::thread_rng();
+        Database{ boids: HashMap::from_iter((0..num_boids).map(|id| (id, Boid::at(Pos::new(rnd.gen_range(0..width), rnd.gen_range(0..height)))))) }
     }
 
     pub fn ids(&self) -> Vec<Id> {
