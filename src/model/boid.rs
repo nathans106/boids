@@ -5,10 +5,6 @@ pub struct Boid {
 }
 
 impl Boid {
-    pub fn new() -> Self {
-        Boid{pos: Pos::origin()}
-    }
-
     pub fn at(pos: Pos) -> Self {
         Boid{pos: pos}
     }
