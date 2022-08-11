@@ -20,4 +20,4 @@ class Program:
     def _update(self):
         positions = self._db.positions()
         self._gui.update_boids(positions)
-        self._db.update()
+        self._db.advance(1)

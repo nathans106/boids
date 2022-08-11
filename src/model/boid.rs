@@ -1,20 +1,20 @@
-use crate::model::{Pos, Velocity};
+use crate::model::{Position, Distance};
 
 pub struct Boid {
-    pos: Pos
+    pos: Position
 }
 
 impl Boid {
-    pub fn at(pos: Pos) -> Self {
+    pub fn at(pos: Position) -> Self {
         Boid{pos: pos}
     }
 
-    pub fn pos(&self) -> &Pos {
+    pub fn pos(&self) -> &Position {
         &self.pos
     }
 
-    pub fn move_(&mut self, velocity: &Velocity) {
-        self.pos += velocity
+    pub fn move_(&mut self, distance: &Distance) {
+        self.pos += distance;
     }
 }
 
