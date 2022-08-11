@@ -6,13 +6,14 @@ use rand::*;
 
 use crate::model::Boid;
 use crate::model::Position;
-use crate::movement::velocity_calculator::calculate_velocities;
+use crate::movement::velocity_calculator::VelocityCalculator;
 
 pub type Id = i32;
 
 #[pyclass]
 pub struct Database {
-    boids: HashMap<Id, Boid>
+    boids: HashMap<Id, Boid>,
+    velocity_calculator: VelocityCalculator
 }
 
 #[pymethods]
@@ -20,7 +21,8 @@ impl Database {
     #[new]
     pub fn new(num_boids: i32, width: i32, height: i32) -> Self {
         let mut rnd = rand::thread_rng();
-        Database{ boids: HashMap::from_iter((0..num_boids).map(|id| (id, Boid::at(Position::new(rnd.gen_range(0..width) as f32, rnd.gen_range(0..height) as f32))))) }
+        let boids = HashMap::from_iter((0..num_boids).map(|id| (id, Boid::at(Position::new(rnd.gen_range(0..width) as f32, rnd.gen_range(0..height) as f32)))));
+        Database{ boids: boids, velocity_calculator: VelocityCalculator::new() }
     }
 
     pub fn ids(&self) -> Vec<Id> {
@@ -32,7 +34,7 @@ impl Database {
     }
 
     pub fn advance(&mut self, seconds: i32) {
-        let velocities = calculate_velocities(&self.boids);
+        let velocities = self.velocity_calculator.velocities(&self.boids);
         for _second in 0..seconds {
             for (id, boid) in self.boids.iter_mut() {
                 let velocity = &velocities[id];
