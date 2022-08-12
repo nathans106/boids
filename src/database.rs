@@ -6,6 +6,7 @@ use rand::*;
 
 use crate::model::Boid;
 use crate::model::Position;
+use crate::model::Velocity;
 use crate::movement::velocity_calculator::VelocityCalculator;
 
 pub type Id = i32;
@@ -21,7 +22,7 @@ impl Database {
     #[new]
     pub fn new(num_boids: i32, width: i32, height: i32) -> Self {
         let mut rnd = rand::thread_rng();
-        let boids = HashMap::from_iter((0..num_boids).map(|id| (id, Boid::at(Position::new(rnd.gen_range(0..width) as f32, rnd.gen_range(0..height) as f32)))));
+        let boids = HashMap::from_iter((0..num_boids).map(|id| (id, Boid::new(Position::new(rnd.gen_range(0..width) as f32, rnd.gen_range(0..height) as f32), Velocity::new()))));
         Database{ boids: boids, velocity_calculator: VelocityCalculator::new() }
     }
 

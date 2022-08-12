@@ -1,4 +1,4 @@
-use std::{ops::{Mul, AddAssign}, time::Duration};
+use std::{ops::{Mul, AddAssign, Div, Sub}, time::Duration, iter::Sum};
 
 use super::{Distance};
 
@@ -21,6 +21,14 @@ impl AddAssign<&Velocity> for Velocity {
     }
 }
 
+impl Div<&f32> for &Velocity {
+    type Output = Velocity;
+
+    fn div(self, rhs: &f32) -> Self::Output {
+        return self * &(1.0 / rhs);
+    }
+}
+
 impl Mul<&Duration> for &Velocity {
     type Output = Distance;
 
@@ -35,5 +43,25 @@ impl Mul<&f32> for &Velocity {
 
     fn mul(self, rhs: &f32) -> Self::Output {
         Velocity{x: self.x * rhs, y: self.y * rhs}
+    }
+}
+
+impl Sub<&Velocity> for &Velocity {
+    type Output = Velocity;
+
+    fn sub(self, rhs: &Velocity) -> Self::Output {
+        return Velocity{ x: self.x - rhs.x, y: self.y - rhs.y };
+    }
+}
+
+impl<'a> Sum<&'a Velocity> for Velocity {
+
+    fn sum<I: Iterator<Item = &'a Velocity>>(iter: I) -> Self {
+        let mut result = Velocity::new();
+        for velocity in iter {
+            result += velocity;
+        }
+
+        return result;
     }
 }
