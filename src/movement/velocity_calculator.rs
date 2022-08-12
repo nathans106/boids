@@ -12,8 +12,8 @@ impl VelocityCalculator {
     pub fn new() -> Self {
         VelocityCalculator {
             fly_to_centre_time: Duration::from_secs(100),
-            avoidance_distance: 1000.0,
-            avoidance_time: Duration::from_secs(300)
+            avoidance_distance: 40.0,
+            avoidance_time: Duration::from_secs(50)
         }
     }
 
@@ -28,7 +28,7 @@ impl VelocityCalculator {
             velocity += &self.flock_to_centre_velocity(boid, &other_positions);
             velocity += &self.avoid_collision_velocity(boid, &other_positions);
 
-            velocities.insert(id.clone(), self.flock_to_centre_velocity(boid, &other_positions));
+            velocities.insert(id.clone(), velocity);
         }
 
         return velocities;
@@ -46,8 +46,7 @@ impl VelocityCalculator {
         );
         let distances = too_close.map(|other_pos| boid.pos() - other_pos);
         let sum: Distance = distances.sum();
-        let velocity = &sum / &self.avoidance_time;
-        return &velocity * &-1.0;
+        return &sum / &self.avoidance_time;
     }
 }
 
