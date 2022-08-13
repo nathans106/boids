@@ -2,7 +2,7 @@ use std::{time::Duration, collections::HashMap};
 
 use pyo3::{pymethods, pyclass, Python, types::PyModule, PyResult, pymodule};
 
-use crate::{Database, movement::velocity_calculator::VelocityCalculator, database::Id, model::{Position, Boid}};
+use crate::{velocity_calculator::VelocityCalculator, database::{Database, Id}, model::{Position, Boid}};
 
 #[pyclass]
 pub struct Simulation {

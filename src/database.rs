@@ -21,18 +21,6 @@ impl Database {
         Database{ boids: boids }
     }
 
-    pub fn boid(&self, id: &Id) -> &Boid {
-        self.boids.get(id).unwrap()
-    }
-
-    pub fn set_boid(&mut self, id: Id, boid: Boid) {
-        self.boids.insert(id, boid);
-    }
-
-    pub fn boids(&self) -> Vec<&Boid> {
-        self.boids.values().collect()
-    }
-
     pub fn data(&self) -> &Data {
         &self.boids
     }
