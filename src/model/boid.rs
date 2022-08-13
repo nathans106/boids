@@ -2,6 +2,7 @@ use crate::model::{Position, Distance};
 
 use super::Velocity;
 
+#[derive(Clone)]
 pub struct Boid {
     pos: Position,
     velocity: Velocity
