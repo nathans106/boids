@@ -1,10 +1,15 @@
 use pyo3::{pyclass, pymethods};
 
 #[pyclass]
+#[derive(Clone)]
 pub struct Parameters {
+    #[pyo3(get, set)]
     pub fly_to_centre_time: u64,
+    #[pyo3(get, set)]
     pub avoidance_distance: f32,
+    #[pyo3(get, set)]
     pub avoidance_time: u64,
+    #[pyo3(get, set)]
     pub velocity_match_rate: f32
 }
 

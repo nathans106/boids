@@ -9,7 +9,8 @@ _CANVAS_SIZE = 500
 class Program:
     def __init__(self):
         self._simulation = Simulation(_NUM_BOIDS, _CANVAS_SIZE, _CANVAS_SIZE)
-        self._gui = Gui(_CANVAS_SIZE, self._update)
+        parameters = self._simulation.parameters()
+        self._gui = Gui(_CANVAS_SIZE, parameters, self._update)
 
         for id in self._simulation.ids():
             self._gui.add_boid(id)
