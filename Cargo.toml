@@ -6,12 +6,12 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
 name = "simulation"
-path = "src/lib.rs"
+path = "src/simulation/lib.rs"
 crate-type = ["cdylib", "lib"]
 
 [[bin]]
 name = "simulate"
-path = "src/bin/simulate.rs"
+path = "src/simulation/bin/simulate.rs"
 
 [dependencies]
 pyo3 = { version = "0.16.5", features = ["extension-module"] }
