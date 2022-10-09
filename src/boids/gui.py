@@ -1,13 +1,11 @@
 from tkinter import E, N, S, W, Canvas, Entry, Frame, Label, StringVar, Tk
 from turtle import width
 
-from simulation import Parameters
-
 _BOID_SIZE = 10
 _INTERVAL_LENGTH = 50
 
 class Gui:
-    def __init__(self, canvas_size, parameters: Parameters, callback):
+    def __init__(self, canvas_size, callback):
         self._callback = callback
         self._boids = {}
 
@@ -21,7 +19,8 @@ class Gui:
         self._parameters_frame.grid(column=1, row=0, sticky=(N, E, S))
 
 
-        self._fly_to_centre_time = StringVar(value=parameters.fly_to_centre_time)
+        # TODO: Populate this with parameter value
+        self._fly_to_centre_time = StringVar(value=1)
         self._fly_to_centre_time_entry = Entry(self._parameters_frame, textvariable=self._fly_to_centre_time)
         self._fly_to_centre_time_entry.grid(column=1, row=0)
 

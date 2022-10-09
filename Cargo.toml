@@ -16,3 +16,5 @@ path = "src/simulation/bin/simulate.rs"
 [dependencies]
 pyo3 = { version = "0.16.5", features = ["extension-module"] }
 rand = "0.8.5"
+serde = { version = "1.0.145", features = ["derive"] }
+toml = "0.5.9"

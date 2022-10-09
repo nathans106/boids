@@ -1,4 +1,3 @@
-from tkinter import Canvas, Tk
 from simulation import Simulation
 
 from boids.gui import Gui
@@ -7,10 +6,9 @@ _NUM_BOIDS = 50
 _CANVAS_SIZE = 500
 
 class Program:
-    def __init__(self):
-        self._simulation = Simulation(_NUM_BOIDS, _CANVAS_SIZE, _CANVAS_SIZE)
-        parameters = self._simulation.parameters()
-        self._gui = Gui(_CANVAS_SIZE, parameters, self._update)
+    def __init__(self, simulation_parameters_file: str):
+        self._simulation = Simulation(_NUM_BOIDS, _CANVAS_SIZE, _CANVAS_SIZE, simulation_parameters_file)
+        self._gui = Gui(_CANVAS_SIZE, self._update)
 
         for id in self._simulation.ids():
             self._gui.add_boid(id)

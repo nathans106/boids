@@ -1,4 +1,4 @@
 from boids import Program
 
-program = Program()
+program = Program("src/simulation_parameters.toml")
 program.run()

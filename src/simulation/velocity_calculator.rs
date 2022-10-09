@@ -1,50 +1,30 @@
-use std::{time::Duration};
+use crate::{model::{Boid, Velocity}, velocity_calculators::Calculator};
 
-use crate::{model::{Boid, Velocity, Position, Distance}, Parameters};
+type Calculators = Vec<Box<dyn Calculator + Send>>;
 
 pub struct VelocityCalculator {
-    pub parameters: Parameters
+    calculators: Calculators
 }
 
 impl VelocityCalculator {
     pub fn new() -> Self {
         VelocityCalculator {
-            parameters: Parameters::new()
+            calculators: vec![]
         }
+    }
+
+    pub fn add_calculator(&mut self, calculator: Box<dyn Calculator + Send>) {
+        self.calculators.push(calculator);
     }
 
     pub fn velocity(&self, boid: &Boid, other_boids: &[&Boid]) -> Velocity {
         let mut velocity = Velocity::new();
-        velocity += &self.flock_to_centre_velocity(boid, &other_boids);
-        velocity += &self.avoid_collision_velocity(boid, &other_boids);
-        velocity += &self.match_velocity_velocity(boid, &other_boids);
+
+        for calculator in &self.calculators {
+            velocity += &calculator.as_ref().calculate(&boid, &other_boids);
+        }
+
         return velocity;
-    }
-
-    fn flock_to_centre_velocity(&self, boid: &Boid, other_boids: &[&Boid]) -> Velocity {
-        let other_positions = other_boids.iter().map(|other_boid| other_boid.pos());
-        let flock_centre = Position::centre(other_positions);
-        let fly_to_centre_time = Duration::from_secs(self.parameters.fly_to_centre_time);
-        let velocity = &(&flock_centre - boid.pos()) / &fly_to_centre_time;
-        return velocity;
-    }
-
-    fn avoid_collision_velocity(&self, boid: &Boid, other_boids: &[&Boid]) -> Velocity {
-        let other_positions = other_boids.iter().map(|other_boid| other_boid.pos());
-        let too_close = other_positions.filter(|other_pos| 
-        (boid.pos() - other_pos).absolute() <= self.parameters.avoidance_distance
-        );
-        let distances = too_close.map(|other_pos| boid.pos() - other_pos);
-        let sum: Distance = distances.sum();
-        let avoidance_time = Duration::from_secs(self.parameters.avoidance_time);
-        return &sum / &avoidance_time;
-    }
-
-    fn match_velocity_velocity(&self, boid: &Boid, other_boids: &[&Boid]) -> Velocity {
-        let velocities_sum: Velocity = other_boids.iter().map(|other_boid| other_boid.velocity()).sum();
-        let num_other = other_boids.len() as f32;
-        let velocity_mean = &velocities_sum / &num_other;
-        return &(&velocity_mean - boid.velocity()) / &self.parameters.velocity_match_rate;
     }
 }
 

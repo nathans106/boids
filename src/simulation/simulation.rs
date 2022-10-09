@@ -1,8 +1,8 @@
-use std::{time::Duration, collections::HashMap};
+use std::{time::Duration, collections::HashMap, path::Path};
 
 use pyo3::{pymethods, pyclass, Python, types::PyModule, PyResult, pymodule};
 
-use crate::{velocity_calculator::VelocityCalculator, database::{Database, Id}, model::{Position, Boid}, Parameters};
+use crate::{velocity_calculator::VelocityCalculator, database::{Database, Id}, model::{Position, Boid}, velocity_calculator_builder::build_velocity_calculator};
 
 #[pyclass]
 pub struct Simulation {
@@ -13,16 +13,8 @@ pub struct Simulation {
 #[pymethods]
 impl Simulation {
     #[new]
-    pub fn new(num_boids: i32, width: i32, height: i32) -> Self {
-        Simulation{ database: Database::new(num_boids, width, height), velocity_calculator: VelocityCalculator::new() }
-    }
-
-    pub fn parameters(&self) -> Parameters {
-        self.velocity_calculator.parameters.clone()
-    }
-
-    pub fn set_parameters(&mut self, parameters: Parameters) {
-        self.velocity_calculator.parameters = parameters;
+    pub fn new(num_boids: i32, width: i32, height: i32, parameters_file: &str) -> Self {
+        Simulation{ database: Database::new(num_boids, width, height), velocity_calculator: build_velocity_calculator(Path::new(parameters_file)) }
     }
 
     pub fn ids(&self) -> Vec<Id> {
@@ -53,7 +45,6 @@ impl Simulation {
 
 #[pymodule]
 fn simulation(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_class::<Parameters>()?;
     m.add_class::<Simulation>()?;
     Ok(())
 }
