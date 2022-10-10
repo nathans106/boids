@@ -1,22 +1,18 @@
+from tkinter import E, N, W, S, Frame, Tk
 from simulation import Simulation
 
-from boids.gui import Gui
-
-_NUM_BOIDS = 50
-_CANVAS_SIZE = 500
+from boids.graphic.sky import Sky
 
 class Program:
-    def __init__(self, simulation_parameters_file: str):
-        self._simulation = Simulation(_NUM_BOIDS, _CANVAS_SIZE, _CANVAS_SIZE, simulation_parameters_file)
-        self._gui = Gui(_CANVAS_SIZE, self._update)
+    def __init__(self, parameters_file: str):
+        self._root = Tk()
 
-        for id in self._simulation.ids():
-            self._gui.add_boid(id)
+        self._mainframe = Frame(self._root)
+        self._mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+
+        self._sky = Sky(self._mainframe, parameters_file)
+        self._sky.grid(sticky=(W, N, S))
+
         
     def run(self):
-        self._gui.start()
-        
-    def _update(self):
-        positions = self._simulation.positions()
-        self._gui.update_boids(positions)
-        self._simulation.advance(1)
+        self._root.mainloop()
