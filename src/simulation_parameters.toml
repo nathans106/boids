@@ -1,3 +1,6 @@
+[boid]
+max_velocity = 6
+
 [avoid_collision]
 distance = 40.0
 time = 50

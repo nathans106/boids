@@ -3,13 +3,15 @@ use crate::{model::{Boid, Velocity}, velocity_calculators::Calculator};
 type Calculators = Vec<Box<dyn Calculator + Send>>;
 
 pub struct VelocityCalculator {
-    calculators: Calculators
+    calculators: Calculators,
+    max_velocity: f32
 }
 
 impl VelocityCalculator {
-    pub fn new() -> Self {
+    pub fn new(max_velocity: f32) -> Self {
         VelocityCalculator {
-            calculators: vec![]
+            calculators: vec![],
+            max_velocity: max_velocity
         }
     }
 
@@ -22,6 +24,12 @@ impl VelocityCalculator {
 
         for calculator in &self.calculators {
             velocity += &calculator.as_ref().calculate(&boid, &other_boids);
+        }
+
+        let abs_velocity = velocity.abs();
+
+        if abs_velocity > self.max_velocity {
+            return &(&velocity / &abs_velocity) * &self.max_velocity;
         }
 
         return velocity;

@@ -12,6 +12,10 @@ impl Velocity {
     pub fn new() -> Self {
         Velocity{x: 0.0, y: 0.0}
     }
+
+    pub fn abs(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
 }
 
 impl AddAssign<&Velocity> for Velocity {
