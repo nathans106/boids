@@ -3,11 +3,11 @@ max_velocity = 6
 vision_distance = 120
 
 [avoid_collision]
-distance = 40.0
-time = 50
+distance = 25.0
+time = 10
 
 [flock_to_centre]
-time = 100
+time = 90
 
 [match_velocity]
-rate = 3.0
+rate = 2
