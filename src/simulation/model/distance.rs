@@ -14,7 +14,7 @@ impl Distance {
         Distance{dx: 0.0, dy: 0.0}
     }
 
-    pub fn absolute(&self) -> f32 {
+    pub fn abs(&self) -> f32 {
         (self.dx.powi(2) + self.dy.powi(2)).sqrt()
     }
 }

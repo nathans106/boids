@@ -1,5 +1,6 @@
 [boid]
 max_velocity = 6
+vision_distance = 120
 
 [avoid_collision]
 distance = 40.0

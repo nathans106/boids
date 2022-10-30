@@ -4,14 +4,16 @@ type Calculators = Vec<Box<dyn Calculator + Send>>;
 
 pub struct VelocityCalculator {
     calculators: Calculators,
-    max_velocity: f32
+    max_velocity: f32,
+    vision_distance: f32
 }
 
 impl VelocityCalculator {
-    pub fn new(max_velocity: f32) -> Self {
+    pub fn new(max_velocity: f32, vision_distance: f32) -> Self {
         VelocityCalculator {
             calculators: vec![],
-            max_velocity: max_velocity
+            max_velocity: max_velocity,
+            vision_distance: vision_distance
         }
     }
 
@@ -22,8 +24,10 @@ impl VelocityCalculator {
     pub fn velocity(&self, boid: &Boid, other_boids: &[&Boid]) -> Velocity {
         let mut velocity = Velocity::new(0.0, 0.0);
 
+        let visible_boids: Vec<&Boid> = other_boids.into_iter().filter(|other_boid| (other_boid.pos() - boid.pos()).abs() <= self.vision_distance).cloned().collect();
+
         for calculator in &self.calculators {
-            velocity += &calculator.as_ref().calculate(&boid, &other_boids);
+            velocity += &calculator.as_ref().calculate(&boid, &visible_boids);
         }
 
         let abs_velocity = velocity.abs();

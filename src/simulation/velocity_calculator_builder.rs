@@ -8,13 +8,14 @@ use std::path::Path;
 use crate::{velocity_calculators::{AvoidCollision, FlockToCentre, MatchVelocity}, velocity_calculator::{VelocityCalculator}};
 
 #[derive(Deserialize)]
-struct General {
-    max_velocity: f32
+struct VelocityParameters {
+    max_velocity: f32,
+    vision_distance: f32
 }
 
 #[derive(Deserialize)]
 struct Parameters {
-    boid: General,
+    boid: VelocityParameters,
     avoid_collision: AvoidCollision,
     flock_to_centre: FlockToCentre,
     match_velocity: MatchVelocity
@@ -24,7 +25,7 @@ pub fn build_velocity_calculator(parameters_file: &Path) -> VelocityCalculator {
     let file_str = std::fs::read_to_string(&parameters_file).unwrap();
     let parameters: Parameters = toml::from_str(&file_str).unwrap();
 
-    let mut velocity_calculator = VelocityCalculator::new(parameters.boid.max_velocity);
+    let mut velocity_calculator = VelocityCalculator::new(parameters.boid.max_velocity, parameters.boid.vision_distance);
     velocity_calculator.add_calculator(Box::new(parameters.avoid_collision));
     velocity_calculator.add_calculator(Box::new(parameters.flock_to_centre));
     velocity_calculator.add_calculator(Box::new(parameters.match_velocity));
