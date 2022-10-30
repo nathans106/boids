@@ -1,4 +1,6 @@
-use crate::model::{Position, Distance};
+use std::time::Duration;
+
+use crate::model::{Position};
 
 use super::Velocity;
 
@@ -21,8 +23,13 @@ impl Boid {
         &self.velocity
     }
 
-    pub fn move_(&mut self, distance: &Distance) {
-        self.pos += distance;
+    pub fn set_velocity(&mut self, velocity: Velocity) {
+        self.velocity = velocity;
+    }
+
+    pub fn advance(&mut self, time: &Duration) {
+        let distance = &self.velocity * time;
+        self.pos += &distance;
     }
 }
 

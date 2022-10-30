@@ -33,9 +33,8 @@ impl Simulation {
 
             for (id, boid) in new_data.iter_mut() {
                 let other_boids: Vec<&Boid> = snapshot.iter().filter(|(other_id, _other_boid)| *other_id != id).map(|(_other_id, other_boid)|other_boid).collect();
-                let velocity = self.velocity_calculator.velocity(&boid, &other_boids);
-                let distance = &velocity * &one_second;
-                boid.move_(&distance);
+                boid.set_velocity(self.velocity_calculator.velocity(&boid, &other_boids));
+                boid.advance(&one_second);
             }
 
             self.database.set_data(new_data);
