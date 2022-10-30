@@ -20,7 +20,7 @@ impl VelocityCalculator {
     }
 
     pub fn velocity(&self, boid: &Boid, other_boids: &[&Boid]) -> Velocity {
-        let mut velocity = Velocity::new();
+        let mut velocity = Velocity::new(0.0, 0.0);
 
         for calculator in &self.calculators {
             velocity += &calculator.as_ref().calculate(&boid, &other_boids);

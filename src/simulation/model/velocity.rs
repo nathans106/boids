@@ -9,8 +9,8 @@ pub struct Velocity {
 }
 
 impl Velocity {
-    pub fn new() -> Self {
-        Velocity{x: 0.0, y: 0.0}
+    pub fn new(x: f32, y: f32) -> Self {
+        Velocity{x: x, y: y}
     }
 
     pub fn abs(&self) -> f32 {
@@ -61,7 +61,7 @@ impl Sub<&Velocity> for &Velocity {
 impl<'a> Sum<&'a Velocity> for Velocity {
 
     fn sum<I: Iterator<Item = &'a Velocity>>(iter: I) -> Self {
-        let mut result = Velocity::new();
+        let mut result = Velocity::new(0.0, 0.0);
         for velocity in iter {
             result += velocity;
         }
