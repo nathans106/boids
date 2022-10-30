@@ -4,7 +4,7 @@ use crate::model::{Boid, Velocity};
 
 use super::Calculator;
 
-#[derive(Deserialize)]
+#[derive(Clone, Deserialize)]
 pub struct MatchVelocity {
     rate: f32
 }

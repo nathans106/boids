@@ -1,24 +1,24 @@
-use crate::{model::{Boid, Velocity}, velocity_calculators::Calculator};
+use crate::{model::{Boid, Velocity}, velocity_calculators::{Calculator, AvoidCollision, FlockToCentre, MatchVelocity}, parameters::Parameters};
 
-type Calculators = Vec<Box<dyn Calculator + Send>>;
-
+#[derive(Clone)]
 pub struct VelocityCalculator {
-    calculators: Calculators,
     max_velocity: f32,
-    vision_distance: f32
+    vision_distance: f32,
+
+    avoid_collision: AvoidCollision,
+    flock_to_centre: FlockToCentre,
+    match_velocity: MatchVelocity
 }
 
 impl VelocityCalculator {
-    pub fn new(max_velocity: f32, vision_distance: f32) -> Self {
+    pub fn new(parameters: &Parameters) -> Self {
         VelocityCalculator {
-            calculators: vec![],
-            max_velocity: max_velocity,
-            vision_distance: vision_distance
+            max_velocity: parameters.boid.max_velocity,
+            vision_distance: parameters.boid.vision_distance,
+            avoid_collision : parameters.avoid_collision.clone(),
+            flock_to_centre: parameters.flock_to_centre.clone(),
+            match_velocity: parameters.match_velocity.clone()
         }
-    }
-
-    pub fn add_calculator(&mut self, calculator: Box<dyn Calculator + Send>) {
-        self.calculators.push(calculator);
     }
 
     pub fn velocity(&self, boid: &Boid, other_boids: &[&Boid]) -> Velocity {
@@ -26,9 +26,9 @@ impl VelocityCalculator {
 
         let visible_boids: Vec<&Boid> = other_boids.into_iter().filter(|other_boid| (other_boid.pos() - boid.pos()).abs() <= self.vision_distance).cloned().collect();
 
-        for calculator in &self.calculators {
-            velocity += &calculator.as_ref().calculate(&boid, &visible_boids);
-        }
+        velocity += &self.avoid_collision.calculate(&boid, &visible_boids);
+        velocity += &self.flock_to_centre.calculate(&boid, &visible_boids);
+        velocity += &self.match_velocity.calculate(&boid, &visible_boids);
 
         let abs_velocity = velocity.abs();
 

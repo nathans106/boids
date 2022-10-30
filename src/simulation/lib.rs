@@ -3,5 +3,5 @@ mod model;
 mod simulation;
 pub use simulation::Simulation;
 mod velocity_calculator;
-mod velocity_calculator_builder;
+mod parameters;
 mod velocity_calculators;

@@ -6,7 +6,7 @@ use crate::model::{Boid, Velocity, Position};
 
 use super::Calculator;
 
-#[derive(Deserialize)]
+#[derive(Clone, Deserialize)]
 pub struct FlockToCentre {
     time: u64
 }

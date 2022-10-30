@@ -6,7 +6,7 @@ use crate::model::{Boid, Velocity, Distance};
 
 use super::Calculator;
 
-#[derive(Deserialize)]
+#[derive(Clone, Deserialize)]
 pub struct AvoidCollision {
     distance: f32,
     time: u64

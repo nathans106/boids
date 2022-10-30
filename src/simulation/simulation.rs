@@ -1,20 +1,19 @@
-use std::{time::Duration, collections::HashMap, path::Path};
+use std::{collections::HashMap, path::Path};
 
 use pyo3::{pymethods, pyclass, Python, types::PyModule, PyResult, pymodule};
 
-use crate::{velocity_calculator::VelocityCalculator, database::{Database, Id}, model::{Position, Boid}, velocity_calculator_builder::build_velocity_calculator};
+use crate::{database::{Database, Id}, model::{Position}, parameters::parameters};
 
 #[pyclass]
 pub struct Simulation {
-    database: Database,
-    velocity_calculator: VelocityCalculator
+    database: Database
 }
 
 #[pymethods]
 impl Simulation {
     #[new]
     pub fn new(num_boids: i32, width: i32, height: i32, parameters_file: &str) -> Self {
-        Simulation{ database: Database::new(num_boids, width, height), velocity_calculator: build_velocity_calculator(Path::new(parameters_file)) }
+        Simulation{ database: Database::new(num_boids, width, height, &parameters(Path::new(parameters_file))) }
     }
 
     pub fn ids(&self) -> Vec<Id> {
@@ -26,19 +25,7 @@ impl Simulation {
     }
 
     pub fn advance(&mut self, seconds: i32) {
-        let one_second = Duration::from_secs(1);
-        for _second in 0..seconds {
-            let snapshot = self.database.data();
-            let mut new_data = snapshot.clone();
-
-            for (id, boid) in new_data.iter_mut() {
-                let other_boids: Vec<&Boid> = snapshot.iter().filter(|(other_id, _other_boid)| *other_id != id).map(|(_other_id, other_boid)|other_boid).collect();
-                boid.set_velocity(self.velocity_calculator.velocity(&boid, &other_boids));
-                boid.advance(&one_second);
-            }
-
-            self.database.set_data(new_data);
-        }
+        self.database.advance(seconds)
     }
 }
 
