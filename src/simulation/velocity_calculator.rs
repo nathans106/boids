@@ -1,4 +1,4 @@
-use crate::{model::{Boid, Velocity}, velocity_calculators::{Calculator, AvoidCollision, FlockToCentre, MatchVelocity}, parameters::Parameters};
+use crate::{newtonian::{Velocity}, boid::Boid, velocity_calculators::{Calculator, AvoidCollision, FlockToCentre, MatchVelocity}, parameters::Parameters};
 
 #[derive(Clone)]
 pub struct VelocityCalculator {

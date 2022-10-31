@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use serde::Deserialize;
 
-use crate::model::{Boid, Velocity, Position};
+use crate::{newtonian::{Velocity, Position}, boid::Boid};
 
 use super::Calculator;
 

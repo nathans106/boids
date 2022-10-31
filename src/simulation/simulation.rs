@@ -2,7 +2,7 @@ use std::{collections::HashMap, path::Path};
 
 use pyo3::{pymethods, pyclass, Python, types::PyModule, PyResult, pymodule};
 
-use crate::{database::{Database, Id}, model::{Position}, parameters::parameters};
+use crate::{database::{Database, Id}, newtonian::{Position}, parameters::parameters};
 
 #[pyclass]
 pub struct Simulation {

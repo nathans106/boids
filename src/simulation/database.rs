@@ -3,9 +3,9 @@ use std::time::Duration;
 
 use rand::*;
 
-use crate::model::Boid;
-use crate::model::Position;
-use crate::model::Velocity;
+use crate::boid::Boid;
+use crate::newtonian::Position;
+use crate::newtonian::Velocity;
 use crate::parameters::Parameters;
 
 pub type Id = i32;

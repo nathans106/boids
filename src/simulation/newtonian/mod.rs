@@ -1,5 +1,3 @@
-mod boid;
-pub use boid::Boid;
 mod position;
 pub use position::Position;
 mod distance;

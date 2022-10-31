@@ -1,5 +1,6 @@
+mod boid;
 mod database;
-mod model;
+mod newtonian;
 mod simulation;
 pub use simulation::Simulation;
 mod velocity_calculator;

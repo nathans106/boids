@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::model::{Boid, Velocity};
+use crate::{newtonian::Velocity, boid::Boid};
 
 use super::Calculator;
 

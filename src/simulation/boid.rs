@@ -1,8 +1,6 @@
 use std::time::Duration;
 
-use crate::{model::{Position}, velocity_calculator::VelocityCalculator, parameters::Parameters};
-
-use super::Velocity;
+use crate::{newtonian::{Position, Velocity}, velocity_calculator::VelocityCalculator, parameters::Parameters};
 
 #[derive(Clone)]
 pub struct Boid {
