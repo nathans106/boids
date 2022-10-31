@@ -44,29 +44,3 @@ impl Database {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn advance_once() {
-        let mut db = Database::new(1, 100, 100);
-        db.advance(1);
-        for pos in db.positions().values() {
-            assert_eq!(pos.x, 1.0);
-            assert_eq!(pos.y, 1.0);
-        }
-    }
-
-    #[test]
-    fn update_twice() {
-        let mut db = Database::new(1, 100, 100);
-        db.advance(1);
-        db.advance(1);
-        for pos in db.positions().values() {
-            assert_eq!(pos.x, 2.0);
-            assert_eq!(pos.y, 2.0);
-        }
-    }
-}

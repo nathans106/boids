@@ -33,17 +33,3 @@ impl Boid {
         self.pos += &distance;
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn move_() {
-        let mut boid = Boid::new(Position::origin(), Velocity::new());
-        boid.move_(&Velocity { x: 1.0, x: 1.0 });
-        let pos = boid.pos();
-        assert_eq!(pos.x, 1);
-        assert_eq!(pos.y, 1);
-    }
-}

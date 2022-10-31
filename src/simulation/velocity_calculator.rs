@@ -39,22 +39,3 @@ impl VelocityCalculator {
         return velocity;
     }
 }
-
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn velocities() {
-        let mut boids = HashMap::new();
-        boids.insert(2, Boid::at(Position::new(0.0, 0.0)));
-
-        let velocity_calculator = VelocityCalculator::new();
-        let result = velocity_calculator.velocities(&boids);
-        for velocity in result.values() {
-            assert_eq!(velocity.x, 1.0);
-            assert_eq!(velocity.x, 1.0);
-        }
-    }
-}
