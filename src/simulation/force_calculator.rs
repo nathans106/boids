@@ -1,7 +1,7 @@
-use crate::{newtonian::{Velocity}, boid::Boid, velocity_calculators::{Calculator, AvoidCollision, FlockToCentre, MatchVelocity}, parameters::Parameters};
+use crate::{newtonian::{Velocity, Force}, boid::Boid, force_calculators::{Calculator, AvoidCollision, FlockToCentre, MatchVelocity}, parameters::Parameters};
 
 #[derive(Clone)]
-pub struct VelocityCalculator {
+pub struct ForceCalculator {
     max_velocity: f32,
     vision_distance: f32,
 
@@ -10,9 +10,9 @@ pub struct VelocityCalculator {
     match_velocity: MatchVelocity
 }
 
-impl VelocityCalculator {
+impl ForceCalculator {
     pub fn new(parameters: &Parameters) -> Self {
-        VelocityCalculator {
+        ForceCalculator {
             max_velocity: parameters.boid.max_velocity,
             vision_distance: parameters.boid.vision_distance,
             avoid_collision : parameters.avoid_collision.clone(),
@@ -21,7 +21,7 @@ impl VelocityCalculator {
         }
     }
 
-    pub fn velocity(&self, boid: &Boid, other_boids: &[&Boid]) -> Velocity {
+    pub fn force(&self, boid: &Boid, other_boids: &[&Boid]) -> Force {
         let mut velocity = Velocity::new(0.0, 0.0);
 
         let visible_boids: Vec<&Boid> = other_boids.into_iter().filter(|other_boid| (other_boid.pos() - boid.pos()).abs() <= self.vision_distance).cloned().collect();

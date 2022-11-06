@@ -17,26 +17,10 @@ impl Position {
     pub fn new(x: f32, y: f32) -> Self {
         Position{x: x, y: y}
     }
+}
 
-    pub fn origin() -> Self {
-        Position{x: 0.0, y: 0.0}
-    }
-
-    pub fn centre<'a, I>(positions: I) -> Position
-        where I: Iterator<Item = &'a Position>
-    {
-        let mut sum_x = 0.0;
-        let mut sum_y = 0.0;
-        let mut count = 0;
-
-        for pos in positions {
-            count += 1;
-            sum_x += pos.x;
-            sum_y += pos.y;
-        }
-
-        return Position{x: sum_x / count as f32, y: sum_y / count as f32};
-    }
+impl Vector for Position {
+    
 }
 
 impl Add<&Distance> for &Position {

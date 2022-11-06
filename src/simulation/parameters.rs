@@ -5,7 +5,7 @@ use toml;
 
 use std::path::Path;
 
-use crate::{velocity_calculators::{AvoidCollision, FlockToCentre, MatchVelocity}};
+use crate::{force_calculators::{AvoidCollision, FlockToCentre, MatchVelocity}};
 
 #[derive(Deserialize)]
 pub struct VelocityParameters {

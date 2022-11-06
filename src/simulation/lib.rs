@@ -3,6 +3,6 @@ mod database;
 mod newtonian;
 mod simulation;
 pub use simulation::Simulation;
-mod velocity_calculator;
+mod force_calculator;
 mod parameters;
-mod velocity_calculators;
+mod force_calculators;

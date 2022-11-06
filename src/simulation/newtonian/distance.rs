@@ -1,12 +1,12 @@
 use std::{ops::{Div, AddAssign}, time::Duration, iter::Sum};
 
-use super::{Velocity};
+use super::{Velocity, Vector};
 
 
 #[derive(Clone)]
 pub struct Distance {
-    pub dx: f32,
-    pub dy: f32
+    dx: f32,
+    dy: f32
 }
 
 impl Distance {
@@ -16,6 +16,16 @@ impl Distance {
 
     pub fn abs(&self) -> f32 {
         (self.dx.powi(2) + self.dy.powi(2)).sqrt()
+    }
+}
+
+impl Vector for Distance {
+    fn x(&self) -> f32 {
+        self.dx
+    }
+
+    fn y(&self) -> f32 {
+        self.dy
     }
 }
 
