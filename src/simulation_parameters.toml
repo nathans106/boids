@@ -1,4 +1,5 @@
 [boid]
+mass = 80
 max_velocity = 6
 vision_distance = 120
 

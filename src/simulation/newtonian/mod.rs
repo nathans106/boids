@@ -1,3 +1,5 @@
+mod acceleration;
+pub use acceleration::Acceleration;
 mod force;
 pub use force::Force;
 mod mass;

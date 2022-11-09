@@ -9,17 +9,11 @@ pub struct Distance {
     dy: f32
 }
 
-impl Distance {
-    pub fn new() -> Self {
+impl Vector for Distance {
+    fn at(x: f32, y: f32) -> Self {
         Distance{dx: 0.0, dy: 0.0}
     }
 
-    pub fn abs(&self) -> f32 {
-        (self.dx.powi(2) + self.dy.powi(2)).sqrt()
-    }
-}
-
-impl Vector for Distance {
     fn x(&self) -> f32 {
         self.dx
     }

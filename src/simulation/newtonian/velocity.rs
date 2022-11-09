@@ -1,6 +1,6 @@
 use std::{ops::{Mul, AddAssign, Div, Sub}, time::Duration, iter::Sum};
 
-use super::{Distance};
+use super::{Distance, Vector};
 
 #[derive(Clone)]
 pub struct Velocity {
@@ -8,13 +8,17 @@ pub struct Velocity {
     pub y: f32
 }
 
-impl Velocity {
-    pub fn new(x: f32, y: f32) -> Self {
-        Velocity{x: x, y: y}
+impl Vector for Velocity {
+    fn at(x: f32, y: f32) -> Self {
+        Velocity { x: x, y: y }
     }
 
-    pub fn abs(&self) -> f32 {
-        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    fn x(&self) -> f32 {
+        self.x
+    }
+
+    fn y(&self) -> f32 {
+        self.y
     }
 }
 
@@ -61,7 +65,7 @@ impl Sub<&Velocity> for &Velocity {
 impl<'a> Sum<&'a Velocity> for Velocity {
 
     fn sum<I: Iterator<Item = &'a Velocity>>(iter: I) -> Self {
-        let mut result = Velocity::new(0.0, 0.0);
+        let mut result = Velocity::at(0.0, 0.0);
         for velocity in iter {
             result += velocity;
         }

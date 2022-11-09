@@ -1,4 +1,4 @@
-use crate::{newtonian::{Velocity, Force}, boid::Boid, force_calculators::{Calculator, AvoidCollision, FlockToCentre, MatchVelocity}, parameters::Parameters};
+use crate::{newtonian::{Velocity, Force, Vector}, boid::Boid, force_calculators::{Calculator, AvoidCollision, FlockToCentre, MatchVelocity}, parameters::Parameters};
 
 #[derive(Clone)]
 pub struct ForceCalculator {
@@ -22,20 +22,20 @@ impl ForceCalculator {
     }
 
     pub fn force(&self, boid: &Boid, other_boids: &[&Boid]) -> Force {
-        let mut velocity = Velocity::new(0.0, 0.0);
+        let mut force = Force::at(0.0, 0.0);
 
         let visible_boids: Vec<&Boid> = other_boids.into_iter().filter(|other_boid| (other_boid.pos() - boid.pos()).abs() <= self.vision_distance).cloned().collect();
 
-        velocity += &self.avoid_collision.calculate(&boid, &visible_boids);
-        velocity += &self.flock_to_centre.calculate(&boid, &visible_boids);
-        velocity += &self.match_velocity.calculate(&boid, &visible_boids);
+        force += &self.avoid_collision.calculate(&boid, &visible_boids);
+        force += &self.flock_to_centre.calculate(&boid, &visible_boids);
+        force += &self.match_velocity.calculate(&boid, &visible_boids);
 
-        let abs_velocity = velocity.abs();
+        let abs_velocity = force.abs();
 
         if abs_velocity > self.max_velocity {
-            return &(&velocity / &abs_velocity) * &self.max_velocity;
+            return &(&force / &abs_velocity) * &self.max_velocity;
         }
 
-        return velocity;
+        return force;
     }
 }

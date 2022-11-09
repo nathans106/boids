@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use crate::{newtonian::{Position, Velocity}, velocity_calculator::ForceCalculator, parameters::Parameters};
+use crate::{newtonian::{Position, Velocity, Mass}, force_calculator::ForceCalculator, parameters::Parameters};
 
 #[derive(Clone)]
 pub struct Boid {
@@ -12,7 +12,7 @@ pub struct Boid {
 
 impl Boid {
     pub fn new(pos: Position, velocity: Velocity, parameters: &Parameters) -> Self {
-        Boid{pos: pos, velocity: velocity, force_calculator: ForceCalculator::new(parameters)}
+        Boid{pos: pos, velocity: velocity, mass: parameters.boid.mass, force_calculator: ForceCalculator::new(parameters)}
     }
 
     pub fn pos(&self) -> &Position {
@@ -24,7 +24,9 @@ impl Boid {
     }
 
     pub fn update(&mut self, other_boids: &[&Boid]) {
-        self.velocity = self.force_calculator.velocity(&self, other_boids);
+        let force = self.force_calculator.force(&self, other_boids);
+        let acceleration = &force / &self.mass;
+        self.velocity += &(&acceleration * &Duration::from_secs(1));
     }
 
     pub fn advance(&mut self, time: &Duration) {

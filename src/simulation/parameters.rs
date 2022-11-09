@@ -5,10 +5,11 @@ use toml;
 
 use std::path::Path;
 
-use crate::{force_calculators::{AvoidCollision, FlockToCentre, MatchVelocity}};
+use crate::{force_calculators::{AvoidCollision, FlockToCentre, MatchVelocity}, newtonian::Mass};
 
 #[derive(Deserialize)]
 pub struct VelocityParameters {
+    pub mass: Mass,
     pub max_velocity: f32,
     pub vision_distance: f32
 }

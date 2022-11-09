@@ -1,3 +1,1 @@
-pub struct Mass {
-    value: f32
-}
+pub type Mass = f32;

@@ -2,7 +2,7 @@ use std::{ops::{Add, AddAssign, Sub}};
 
 use pyo3::prelude::*;
 
-use super::Distance;
+use super::{Distance, Vector};
 
 #[pyclass]
 #[derive(Clone)]
@@ -13,19 +13,23 @@ pub struct Position {
     pub y: f32
 }
 
-impl Position {
-    pub fn new(x: f32, y: f32) -> Self {
-        Position{x: x, y: y}
-    }
-}
-
 impl Vector for Position {
-    
+    fn at(x: f32, y: f32) -> Self {
+        Position { x: x, y: y }
+    }
+
+    fn x(&self) -> f32 {
+        self.x
+    }
+
+    fn y(&self) -> f32 {
+        self.y
+    }
 }
 
 impl Add<&Distance> for &Position {
     fn add(self, distance: &Distance) -> Position {
-        return Position{x: self.x + distance.dx, y: self.y + distance.dy};
+        return Position{x: self.x + distance.x(), y: self.y + distance.y()};
     }
 
     type Output = Position;
@@ -33,8 +37,8 @@ impl Add<&Distance> for &Position {
 
 impl AddAssign<&Distance> for Position {
     fn add_assign(&mut self, distance: &Distance) {
-        self.x += distance.dx;
-        self.y += distance.dy;
+        self.x += distance.x();
+        self.y += distance.y();
     }
 }
 

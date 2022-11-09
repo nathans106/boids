@@ -19,7 +19,7 @@ pub struct Database {
 impl Database {
     pub fn new(num_boids: i32, width: i32, height: i32, parameters: &Parameters) -> Self {
         let mut rnd = rand::thread_rng();
-        let boids = HashMap::from_iter((0..num_boids).map(|id| (id, Boid::new(Position::new(rnd.gen_range(0..width) as f32, rnd.gen_range(0..height) as f32), Velocity::new(rnd.gen_range(0..3) as f32, rnd.gen_range(0..3) as f32), parameters))));
+        let boids = HashMap::from_iter((0..num_boids).map(|id| (id, Boid::new(Position::at(rnd.gen_range(0..width) as f32, rnd.gen_range(0..height) as f32), Velocity::new(rnd.gen_range(0..3) as f32, rnd.gen_range(0..3) as f32), parameters))));
         Database{ boids: boids }
     }
 
