@@ -1,22 +1,6 @@
-mod acceleration;
-pub use acceleration::Acceleration;
-mod force;
-pub use force::Force;
-mod mass;
-pub use mass::Mass;
-mod position;
-pub use position::Position;
-mod distance;
-pub use distance::Distance;
+mod scalar;
+pub use scalar::Scalar;
+mod units;
+pub use units::*;
 mod vector;
 pub use vector::Vector;
-mod velocity;
-pub use velocity::Velocity;
-
-use pyo3::prelude::*;
-
-#[pymodule]
-fn model(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_class::<Position>()?;
-    Ok(())
-}

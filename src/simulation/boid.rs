@@ -1,18 +1,28 @@
-use std::time::Duration;
-
-use crate::{newtonian::{Position, Velocity, Mass}, force_calculator::ForceCalculator, parameters::Parameters};
+use crate::{
+    force_calculator::ForceCalculator,
+    newtonian::{Acceleration, Mass, Position, Scalar, Vector, Velocity},
+    parameters::Parameters,
+    simulation::TICK,
+};
 
 #[derive(Clone)]
 pub struct Boid {
     mass: Mass,
     pos: Position,
     velocity: Velocity,
-    force_calculator: ForceCalculator
+    acceleration: Acceleration,
+    force_calculator: ForceCalculator,
 }
 
 impl Boid {
     pub fn new(pos: Position, velocity: Velocity, parameters: &Parameters) -> Self {
-        Boid{pos: pos, velocity: velocity, mass: parameters.boid.mass, force_calculator: ForceCalculator::new(parameters)}
+        Boid {
+            pos: pos,
+            velocity: velocity,
+            acceleration: Vector::origin(),
+            mass: parameters.boid.mass,
+            force_calculator: ForceCalculator::new(parameters),
+        }
     }
 
     pub fn pos(&self) -> &Position {
@@ -25,11 +35,11 @@ impl Boid {
 
     pub fn update(&mut self, other_boids: &[&Boid]) {
         let force = self.force_calculator.force(&self, other_boids);
-        let acceleration = &force / &self.mass;
-        self.velocity += &(&acceleration * &Duration::from_secs(1));
+        self.acceleration = &force / &self.mass;
     }
 
-    pub fn advance(&mut self, time: &Duration) {
+    pub fn advance(&mut self, time: &Scalar) {
+        self.velocity += &(&self.acceleration * &TICK);
         let distance = &self.velocity * time;
         self.pos += &distance;
     }

@@ -1,31 +1,103 @@
-pub trait Vector {
-    fn at(x: f32, y: f32) -> Self;
-    fn x(&self) -> f32;
-    fn y(&self) -> f32;
+use std::{
+    iter::Sum,
+    ops::{AddAssign, Div, Mul, Sub},
+};
 
-    fn origin() -> Self where Self: Sized {
-        Self::at(0.0, 0.0)
+use serde::Deserialize;
+
+use crate::simulation::DIMENSIONS;
+
+use super::Scalar;
+
+#[derive(Clone, Copy, Deserialize)]
+pub struct Vector {
+    values: [f32; DIMENSIONS],
+}
+
+impl Vector {
+    pub fn new(values: [f32; DIMENSIONS]) -> Self {
+        Vector { values: values }
     }
 
-    fn unit() -> Self where Self: Sized {
-        Self::at(0.0, 0.0)
+    pub fn data(&self) -> &[f32; DIMENSIONS] {
+        &self.values
     }
 
-    fn abs(&self) -> f32 {
-        (self.x().powi(2) + self.y().powi(2)).sqrt()
+    pub fn origin() -> Self {
+        Self {
+            values: [0.0; DIMENSIONS],
+        }
     }
 
-    fn mean(vectors: &[&Self]) -> Self where Self: Sized {
-        let mut sum_x = 0.0;
-        let mut sum_y = 0.0;
-        let mut count = 0;
+    pub fn abs(&self) -> f32 {
+        self.values
+            .iter()
+            .map(|val| val.powi(2))
+            .sum::<f32>()
+            .sqrt()
+    }
 
-        for vector in vectors {
-            count += 1;
-            sum_x += vector.x();
-            sum_y += vector.y();
+    pub fn mean(vectors: &[&Self]) -> Self
+    where
+        Self: Sized,
+    {
+        let num_vectors = vectors.iter().count() as Scalar;
+        let sum = vectors.into_iter().map(|v| **v).sum::<Self>();
+        return &sum / &num_vectors;
+    }
+}
+
+impl AddAssign<&Vector> for Vector {
+    fn add_assign(&mut self, rhs: &Vector) {
+        for (idx, value) in self.values.iter_mut().enumerate() {
+            *value += rhs.values[idx];
+        }
+    }
+}
+
+impl Div<&Scalar> for &Vector {
+    type Output = Vector;
+
+    fn div(self, rhs: &Scalar) -> Self::Output {
+        let values = self.values.map(|num| num / rhs);
+        return Vector::new(values);
+    }
+}
+
+impl Div<&Vector> for &Vector {
+    type Output = Vector;
+
+    fn div(self, rhs: &Vector) -> Self::Output {
+        let values = self.values.zip(rhs.values).map(|(num, den)| num / den);
+        return Vector::new(values);
+    }
+}
+
+impl Mul<&Scalar> for &Vector {
+    type Output = Vector;
+
+    fn mul(self, rhs: &Scalar) -> Self::Output {
+        let values = self.values.map(|v| v * rhs);
+        return Vector::new(values);
+    }
+}
+
+impl Sub for &Vector {
+    type Output = Vector;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        let values = self.values.zip(rhs.values).map(|(l, r)| l - r);
+        return Vector::new(values);
+    }
+}
+
+impl Sum<Vector> for Vector {
+    fn sum<I: Iterator<Item = Self>>(iter: I) -> Vector {
+        let mut result = Vector::origin();
+        for v in iter {
+            result += &v;
         }
 
-        return Self::at(sum_x / count as f32, sum_y / count as f32);
+        return result;
     }
 }
