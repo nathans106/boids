@@ -26,12 +26,12 @@ impl Database {
                         rnd.gen_range(0..width) as f32,
                         rnd.gen_range(0..height) as f32,
                     ]),
-                    Velocity::new([rnd.gen_range(0..3) as f32, rnd.gen_range(0..3) as f32]),
+                    Velocity::new([rnd.gen_range(-2..3) as f32, rnd.gen_range(-2..3) as f32]),
                     parameters,
                 ),
             )
         }));
-        Database { boids: boids }
+        Database { boids }
     }
 
     pub fn data(&self) -> &Data {

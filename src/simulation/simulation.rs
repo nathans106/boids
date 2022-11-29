@@ -37,8 +37,8 @@ impl Simulation {
     pub fn positions(&self) -> HashMap<Id, two_d::TwoDPosition> {
         self.database
             .data()
-            .into_iter()
-            .map(|(id, boid)| (id.clone(), two_d::TwoDPosition::from(boid.pos())))
+            .iter()
+            .map(|(id, boid)| (*id, two_d::TwoDPosition::from(boid.pos())))
             .collect()
     }
 

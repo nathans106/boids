@@ -30,14 +30,14 @@ impl ForceCalculator {
         let mut force = Force::origin();
 
         let visible_boids: Vec<&Boid> = other_boids
-            .into_iter()
+            .iter()
             .filter(|other_boid| (other_boid.pos() - boid.pos()).abs() <= self.vision_distance)
             .cloned()
             .collect();
 
-        force += &self.avoid_collision.calculate(&boid, &visible_boids);
-        force += &self.flock_to_centre.calculate(&boid, &visible_boids);
-        force += &self.match_velocity.calculate(&boid, &visible_boids);
+        force += &self.avoid_collision.calculate(boid, &visible_boids);
+        force += &self.flock_to_centre.calculate(boid, &visible_boids);
+        force += &self.match_velocity.calculate(boid, &visible_boids);
 
         let abs_velocity = force.abs();
 
@@ -45,6 +45,6 @@ impl ForceCalculator {
             return &(&force / &abs_velocity) * &self.max_velocity;
         }
 
-        return force;
+        force
     }
 }

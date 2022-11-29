@@ -16,7 +16,7 @@ pub struct Vector {
 
 impl Vector {
     pub fn new(values: [f32; DIMENSIONS]) -> Self {
-        Vector { values: values }
+        Vector { values }
     }
 
     pub fn data(&self) -> &[f32; DIMENSIONS] {
@@ -41,9 +41,9 @@ impl Vector {
     where
         Self: Sized,
     {
-        let num_vectors = vectors.iter().count() as Scalar;
-        let sum = vectors.into_iter().map(|v| **v).sum::<Self>();
-        return &sum / &num_vectors;
+        let num_vectors = vectors.len() as Scalar;
+        let sum = vectors.iter().map(|v| **v).sum::<Self>();
+        &sum / &num_vectors
     }
 }
 
@@ -60,7 +60,7 @@ impl Div<&Scalar> for &Vector {
 
     fn div(self, rhs: &Scalar) -> Self::Output {
         let values = self.values.map(|num| num / rhs);
-        return Vector::new(values);
+        Vector::new(values)
     }
 }
 
@@ -69,7 +69,7 @@ impl Div<&Vector> for &Vector {
 
     fn div(self, rhs: &Vector) -> Self::Output {
         let values = self.values.zip(rhs.values).map(|(num, den)| num / den);
-        return Vector::new(values);
+        Vector::new(values)
     }
 }
 
@@ -78,7 +78,7 @@ impl Mul<&Scalar> for &Vector {
 
     fn mul(self, rhs: &Scalar) -> Self::Output {
         let values = self.values.map(|v| v * rhs);
-        return Vector::new(values);
+        Vector::new(values)
     }
 }
 
@@ -87,7 +87,7 @@ impl Sub for &Vector {
 
     fn sub(self, rhs: Self) -> Self::Output {
         let values = self.values.zip(rhs.values).map(|(l, r)| l - r);
-        return Vector::new(values);
+        Vector::new(values)
     }
 }
 
@@ -98,6 +98,6 @@ impl Sum<Vector> for Vector {
             result += &v;
         }
 
-        return result;
+        result
     }
 }

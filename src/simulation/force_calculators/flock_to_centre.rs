@@ -20,6 +20,6 @@ impl Calculator for FlockToCentre {
             .collect();
         let flock_centre = Position::mean(&other_positions);
         let force = &(&flock_centre - boid.pos()) / &self.time;
-        return force;
+        force
     }
 }

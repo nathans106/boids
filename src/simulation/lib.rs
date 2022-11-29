@@ -1,4 +1,5 @@
 #![feature(array_zip)]
+#![allow(clippy::borrow_deref_ref)]
 
 mod boid;
 mod database;

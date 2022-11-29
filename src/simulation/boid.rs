@@ -17,8 +17,8 @@ pub struct Boid {
 impl Boid {
     pub fn new(pos: Position, velocity: Velocity, parameters: &Parameters) -> Self {
         Boid {
-            pos: pos,
-            velocity: velocity,
+            pos,
+            velocity,
             acceleration: Vector::origin(),
             mass: parameters.boid.mass,
             force_calculator: ForceCalculator::new(parameters),
@@ -34,7 +34,7 @@ impl Boid {
     }
 
     pub fn update(&mut self, other_boids: &[&Boid]) {
-        let force = self.force_calculator.force(&self, other_boids);
+        let force = self.force_calculator.force(self, other_boids);
         self.acceleration = &force / &self.mass;
     }
 

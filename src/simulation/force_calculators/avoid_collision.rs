@@ -20,6 +20,6 @@ impl Calculator for AvoidCollision {
             other_positions.filter(|other_pos| (boid.pos() - other_pos).abs() <= self.distance);
         let distances = too_close.map(|other_pos| boid.pos() - other_pos);
         let sum: Distance = distances.sum();
-        return &sum / &self.intensity;
+        &sum / &self.intensity
     }
 }

@@ -1,7 +1,5 @@
 use serde::Deserialize;
 
-use toml;
-
 use std::path::Path;
 
 use crate::{
@@ -25,6 +23,6 @@ pub struct Parameters {
 }
 
 pub fn parameters(parameters_file: &Path) -> Parameters {
-    let file_str = std::fs::read_to_string(&parameters_file).unwrap();
-    return toml::from_str(&file_str).unwrap();
+    let file_str = std::fs::read_to_string(parameters_file).unwrap();
+    toml::from_str(&file_str).unwrap()
 }
